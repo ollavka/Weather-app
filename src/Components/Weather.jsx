@@ -10,7 +10,8 @@ const SideBar = lazy(() => import('./SideBar/SideBar.jsx'))
 
 const Weather = () => {
     const [URL, setURL, urlError] = usePosition()
-    const [weatherData, setWeatherData] = useState(null)
+    const [isLoaded, setIsLoaded] = useState(false)
+    const [weatherData, setWeatherData] = useState({})
     const [weatherLocation, setWeatherLocation] = useState('')
     const [weatherSwiper, setWeatherSwiper] = useState()
     const [activeDay, setActiveDay] = useState(0)
@@ -74,6 +75,8 @@ const Weather = () => {
                         }
                     }))
                 })
+
+                await setIsLoaded(true)
             } else {
                 setWeatherData({ error: data.message, cod: data.cod })
             }
@@ -87,7 +90,7 @@ const Weather = () => {
             getWeather()
         }
         
-    }, [URL])
+    }, [URL, urlError])
 
     useEffect(() => {
         if (theme === 'light') {
@@ -112,7 +115,7 @@ const Weather = () => {
         <div className={`weather${theme === 'light' ? ' theme-light' : ''}`}>
             <div className="weather__container _container">
                 {  
-                    weatherData && (
+                    isLoaded && (
                         <Suspense fallback={<Loader className={`${theme === 'light' ? ' theme-light' : ''}`} />}>
                             <WeatherContext.Provider value={contextValue}>
                                 <SideBar />
