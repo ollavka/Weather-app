@@ -10,8 +10,8 @@ const SideBar = lazy(() => import('./SideBar/SideBar.jsx'))
 
 const Weather = () => {
     const [URL, setURL, urlError] = usePosition()
-    const [isLoaded, setIsLoaded] = useState(false)
-    const [weatherData, setWeatherData] = useState({})
+    const [keyPressed, setKeyPressed] = useState(null)
+    const [weatherData, setWeatherData] = useState(null)
     const [weatherLocation, setWeatherLocation] = useState('')
     const [weatherSwiper, setWeatherSwiper] = useState()
     const [activeDay, setActiveDay] = useState(0)
@@ -75,8 +75,6 @@ const Weather = () => {
                         }
                     }))
                 })
-
-                await setIsLoaded(true)
             } else {
                 setWeatherData({ error: data.message, cod: data.cod })
             }
@@ -108,22 +106,23 @@ const Weather = () => {
         weatherSwiper, setWeatherSwiper,
         weatherLocation, setWeatherLocation,
         setURL, urlError,
-        theme, setTheme
+        theme, setTheme,
+        keyPressed
     }
 
     return (
-        <div className={`weather${theme === 'light' ? ' theme-light' : ''}`}>
+        <div className={`weather${theme === 'light' ? ' theme-light' : ''}`} tabIndex={0} onKeyDown={event => setKeyPressed(event.code)}>
             <div className="weather__container _container">
-                {  
-                    isLoaded && (
-                        <Suspense fallback={<Loader className={`${theme === 'light' ? ' theme-light' : ''}`} />}>
-                            <WeatherContext.Provider value={contextValue}>
-                                <SideBar />
-                                <MainWeather />
-                            </WeatherContext.Provider>
-                        </Suspense>
-                    )
-                }
+                    <Suspense fallback={<Loader className={`${theme === 'light' ? ' theme-light' : ''}`} />}>
+                            { 
+                                weatherData && (
+                                    <WeatherContext.Provider value={contextValue}>
+                                        <SideBar />
+                                        <MainWeather />
+                                    </WeatherContext.Provider>
+                                )
+                            }
+                    </Suspense>
             </div>
         </div>
     )

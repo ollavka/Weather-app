@@ -15,7 +15,7 @@ const MainWeather = () => {
                 {
                     weatherData.error ? 
                     <div className="main-section__error">
-                        {`ERROR: ${weatherData?.cod !== undefined ? weatherData?.cod : ''} ${weatherData?.description !== undefined ? weatherData?.description : ''}`}
+                        {`ERROR: ${weatherData?.cod ? weatherData?.cod : ''} ${weatherData?.description ? weatherData?.description : ''}`}
                     </div> :
                     <>
                         <ListWeatherDays />

@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import CurrentTime from "./CurrentTime.jsx"
 import WeatherContext from "../WeatherContext.js"
 import Icon from "../Icon.jsx"
@@ -13,8 +13,13 @@ const SideBar = () => {
         }
     }
 
-    const { weatherData, activeDay, activeTimeDay, unitWeather, weatherLocation, setWeatherLocation, setURL, theme } = useContext(WeatherContext)
+    const { weatherData, activeDay, activeTimeDay, unitWeather, weatherLocation, setWeatherLocation, setURL, theme, keyPressed } = useContext(WeatherContext)
     
+    useEffect(() => {
+        if (keyPressed === 'Enter') {
+            handleChangeURL()
+        }
+    }, [keyPressed])
 
     if (weatherData.error) {
         return (

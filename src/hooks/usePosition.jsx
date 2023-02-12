@@ -23,8 +23,9 @@ const usePosition = () => {
         }
 
         const watcher = geo.watchPosition(onChange, onError)
+        
         return () => geo.clearWatch(watcher)
-    }, [])
+    }, [])  
 
     return [ URL, setURL, error ]
 }
