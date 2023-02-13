@@ -75,6 +75,7 @@ const Weather = () => {
                         }
                     }))
                 })
+
             } else {
                 setWeatherData({ error: data.message, cod: data.cod })
             }
@@ -87,16 +88,14 @@ const Weather = () => {
         if (URL) {
             getWeather()
         }
-        
-    }, [URL, urlError])
 
-    useEffect(() => {
         if (theme === 'light') {
             document.body.classList.add('theme-light')
         } else {
             document.body.classList.remove('theme-light')
         }
-    }, [theme])
+        
+    }, [URL, urlError, theme])
 
     const contextValue = {
         weatherData,
